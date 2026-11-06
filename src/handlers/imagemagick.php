@@ -515,7 +515,7 @@ class ezcImageAnalyzerImagemagickHandler extends ezcImageAnalyzerHandler
         // $addtionsArr["COMPUTED"]["ByteOrderMotorola"]  =  null;
 
         $fNumberParts = isset( $exifArr["EXIF"]["FNumber"] ) ? explode( "/", $exifArr["EXIF"]["FNumber"] ) : null;
-        if ( sizeof( $fNumberParts ) === 2 )
+        if ( is_array( $fNumberParts ) && count( $fNumberParts ) === 2 )
         {
             $addtionsArr["COMPUTED"]["ApertureFNumber"] = sprintf( "f/%.1f", $fNumberParts[0] / $fNumberParts[1] );
         }
