@@ -49,10 +49,10 @@ class ezcImageAnalysisAnalyzerTest extends ezcTestCase
 
 	public static function suite()
 	{
-		return new PHPUnit_Framework_TestSuite( "ezcImageAnalysisAnalyzerTest" );
+		return new \PHPUnit\Framework\TestSuite( "ezcImageAnalysisAnalyzerTest" );
 	}
 
-    protected function setUp()
+    protected function setUp(): void
     {
         if ( !ezcBaseFeatures::hasExtensionSupport( 'exif' ) )
         {
@@ -696,7 +696,28 @@ class ezcImageAnalysisAnalyzerTest extends ezcTestCase
 
     public function testAnalyzerGeneralNotProcessable()
     {
-
+        // A file that is no image is refused by every handler.
+        $tempDir = $this->createTempDir( 'ezcImageAnalysisAnalyzerTest' );
+        $fileName = $tempDir . "/not-an-image.txt";
+        file_put_contents( $fileName, "some contents" );
+        ezcImageAnalyzer::setHandlerClasses( array(
+            'ezcImageAnalyzerPhpHandler' => array(),
+            'ezcImageAnalyzerImagemagickHandler' => array(),
+        ) );
+        try
+        {
+            new ezcImageAnalyzer( $fileName );
+            $this->removeTempDir();
+            $this->fail( 'Expected exception was not thrown' );
+        }
+        catch ( ezcImageAnalyzerFileNotProcessableException $e )
+        {
+            $this->removeTempDir();
+            $this->assertEquals(
+                "Could not process file '{$fileName}'. Reason: Could not determine MIME type of file..",
+                $e->getMessage()
+            );
+        }
     }
 
     protected function getAnalyzerPhpHandler( $file )
@@ -819,7 +840,9 @@ class ezcImageAnalysisAnalyzerTest extends ezcTestCase
 
     public function testGetHandlerClasses()
     {
-        ezcImageAnalyzer::getHandlerClasses();
+        $handlers = array( 'ezcImageAnalyzerImagemagickHandler' => array() );
+        ezcImageAnalyzer::setHandlerClasses( $handlers );
+        $this->assertSame( $handlers, ezcImageAnalyzer::getHandlerClasses() );
     }
 
     public function testIsSet()
