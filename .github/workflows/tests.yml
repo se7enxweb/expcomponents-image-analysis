@@ -32,6 +32,10 @@ jobs:
           done
           exit $status
 
+      - name: Install ImageMagick
+        # The ImageMagick handler runs "identify"; the runner image has no ImageMagick.
+        run: sudo apt-get update -q && sudo apt-get install -y -q --no-install-recommends imagemagick
+
       - name: Use sibling forks without a Packagist release from GitHub
         # Changes only this checkout's composer.json, and only for a fork that has
         # no release on Packagist yet; released forks resolve as users get them.
