@@ -2,7 +2,7 @@
 
 This class allows you to analyse image files in different ways. At least the MIME type of the file is returned. In some cases (JPEG, TIFF and GIF) additional information is gathered as well.
 
-This is the Exponential fork of [zetacomponents/ImageAnalysis](https://github.com/zetacomponents/ImageAnalysis),
+This is the Exponential Components fork of [zetacomponents/ImageAnalysis](https://github.com/zetacomponents/ImageAnalysis),
 maintained by 7x (se7en.x) and the Exponential Foundation for Exponential and anyone else
 who uses the Zeta Components ImageAnalysis component on current PHP versions. All credit for the
 component goes to the Zeta Components authors listed in `composer.json` and `CREDITS`;
